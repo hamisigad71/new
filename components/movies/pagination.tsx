@@ -1,19 +1,35 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
+import { useState } from "react";
 
 interface PaginationProps {
   currentPage: number;
   totalPages: number;
   onPageChangeAction: (page: number) => void;
+  loading?: boolean;
 }
 
 export function Pagination({
   currentPage,
   totalPages,
   onPageChangeAction,
+  loading = false,
 }: PaginationProps) {
+  const [loadingPage, setLoadingPage] = useState<number | null>(null);
+
+  const handlePageChange = async (page: number) => {
+    if (loading || page === currentPage) return;
+
+    setLoadingPage(page);
+    try {
+      await onPageChangeAction(page);
+    } finally {
+      setLoadingPage(null);
+    }
+  };
+
   const getVisiblePages = () => {
     const delta = 1; // Number of pages to show on each side of current page
     const range: number[] = [];
@@ -62,16 +78,28 @@ export function Pagination({
 
   return (
     <div className="flex flex-wrap items-center justify-center gap-2 mt-12">
+      {/* Loading indicator */}
+      {loading && (
+        <div className="flex items-center gap-2 text-muted-foreground text-sm mr-4">
+          <Loader2 className="h-4 w-4 animate-spin" />
+          Loading...
+        </div>
+      )}
+
       <Button
         variant="outline"
         size="sm"
-        onClick={() => onPageChangeAction(currentPage - 1)}
-        disabled={currentPage === 1}
+        onClick={() => handlePageChange(currentPage - 1)}
+        disabled={currentPage === 1 || loading}
         className={`bg-white text-blue-700 hover:bg-blue-700 hover:text-white border-none ${
-          currentPage === 1 ? "opacity-50 cursor-not-allowed" : ""
+          currentPage === 1 || loading ? "opacity-50 cursor-not-allowed" : ""
         }`}
       >
-        <ChevronLeft className="h-4 w-4 mr-1" />
+        {loadingPage === currentPage - 1 ? (
+          <Loader2 className="h-4 w-4 mr-1 animate-spin" />
+        ) : (
+          <ChevronLeft className="h-4 w-4 mr-1" />
+        )}
         Prev
       </Button>
 
@@ -81,15 +109,23 @@ export function Pagination({
             key={index}
             variant="outline"
             size="sm"
-            onClick={() => typeof page === "number" && onPageChangeAction(page)}
-            disabled={typeof page !== "number"}
+            onClick={() => typeof page === "number" && handlePageChange(page)}
+            disabled={typeof page !== "number" || loading}
             className={`min-w-[40px] bg-white text-blue-700 border-none
               hover:bg-blue-700 hover:text-white
               ${page === currentPage ? "bg-blue-700 text-white" : ""}
-              ${typeof page !== "number" ? "opacity-50 cursor-not-allowed" : ""}
+              ${
+                typeof page !== "number" || loading
+                  ? "opacity-50 cursor-not-allowed"
+                  : ""
+              }
             `}
           >
-            {page}
+            {loadingPage === page ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              page
+            )}
           </Button>
         ))}
       </div>
@@ -97,14 +133,22 @@ export function Pagination({
       <Button
         variant="outline"
         size="sm"
-        onClick={() => onPageChangeAction(currentPage + 1)}
-        disabled={currentPage === totalPages}
+        onClick={() => handlePageChange(currentPage + 1)}
+        disabled={currentPage === totalPages || loading}
         className={`bg-white text-blue-700 hover:bg-blue-700 hover:text-white border-none ${
-          currentPage === totalPages ? "opacity-50 cursor-not-allowed" : ""
+          currentPage === totalPages || loading
+            ? "opacity-50 cursor-not-allowed"
+            : ""
         }`}
       >
-        Next
-        <ChevronRight className="h-4 w-4 ml-1" />
+        {loadingPage === currentPage + 1 ? (
+          <Loader2 className="h-4 w-4 ml-1 animate-spin" />
+        ) : (
+          <>
+            Next
+            <ChevronRight className="h-4 w-4 ml-1" />
+          </>
+        )}
       </Button>
     </div>
   );

@@ -1,15 +1,21 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Star, Calendar, Clock, TrendingUp } from "lucide-react";
 import type { Movie } from "@/lib/tmdb";
 import { tmdbApi } from "@/lib/tmdb";
+import { useTheme } from "next-themes";
 
 interface MovieCardProps {
   movie: Movie;
 }
 
 export function MovieCard({ movie }: MovieCardProps) {
+  // Get current theme
+  const { theme } = useTheme();
+
   // Format release date
   const releaseDate = new Date(movie.release_date);
   const releaseYear = releaseDate.getFullYear();
@@ -65,7 +71,11 @@ export function MovieCard({ movie }: MovieCardProps) {
           {/* New Badge */}
           {isNew() && (
             <div className="absolute top-2 left-2 z-10">
-              <Badge className="bg-black/70 text-yellow border-black/20 animate-pulse-slow">
+              <Badge
+                className={`bg-black/70 ${
+                  theme === "light" ? "text-white" : "text-yellow"
+                } border-black/20 animate-pulse-slow`}
+              >
                 New
               </Badge>
             </div>

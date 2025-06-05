@@ -66,8 +66,8 @@ export function Header() {
     <header
       className={`sticky top-0 z-50 w-full transition-all duration-200 ${
         isScrolled
-          ? "professional-header soft-shadow-md"
-          : "bg-background/85 backdrop-blur-sm"
+          ? "bg-background/95 backdrop-blur-sm shadow-sm border-b border-border/30"
+          : "bg-background/90 backdrop-blur-sm"
       }`}
     >
       <div className="container mx-auto px-4">
