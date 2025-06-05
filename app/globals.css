@@ -14,24 +14,24 @@ body {
 
 @layer base {
   :root {
-    --background: 238 236 229;   /* Softer beige/gray */
-    --foreground: 44 44 44;      /* Slightly lighter than pure black */
-    --card: 0 0% 100%;
+   --background: 0 0% 98%;
+    --foreground: 220 13% 18%;
+    --card: 0 0% 96%;
     --card-foreground: 220 13% 18%;
-    --popover: 0 0% 100%;
+    --popover: 0 0% 96%;
     --popover-foreground: 220 13% 18%;
-    --primary: 59 130 246;       /* Blue */
-    --primary-foreground: 255 255 255;
-    --secondary: 220 14% 96%;
+    --primary: 220 91% 35%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 220 14% 94%;
     --secondary-foreground: 220 13% 18%;
-    --muted: 220 14% 96%;
+    --muted: 220 14% 94%;
     --muted-foreground: 220 8.9% 46.1%;
-    --accent: 220 14% 96%;
+    --accent: 220 14% 94%;
     --accent-foreground: 220 13% 18%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
+    --border: 220 13% 88%;
+    --input: 220 13% 88%;
     --ring: 220 91% 35%;
     --radius: 0.5rem;
   }
